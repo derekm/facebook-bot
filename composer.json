@@ -21,7 +21,7 @@
         "facebook/php-sdk-v4" : "4.0.*",
         "symfony/yaml": "~2.7",
         "monolog/monolog": "~1.14",
-        "ext-pthreads": "*"
+        "ext-pthreads": "<3.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.7"
