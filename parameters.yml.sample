@@ -11,11 +11,11 @@ connection:
     access_token:       CAACEcBAD6wzVT0dSnpZCbIEbxL... # optional
 
 # Member Request Module
-mod-memberrequest:
+mod-MemberRequest:
     autoload:           true
 
 # New Post Module
-mod-newpost:
+mod-NewPost:
     autoload:               true
     gistify_comment:        |
         [admin] Hi, {author}.

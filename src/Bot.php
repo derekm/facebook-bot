@@ -109,7 +109,7 @@ class Bot
         $name = array_pop($parts);
         $parts += [$name . 'Module', $name . 'Config'];
         $fqClassName = ModuleManager::MOD_ROOTNS . '\\' . implode('\\', $parts);
-        $configKey = 'mod-' . strtolower($name);
+        $configKey = 'mod-' . $name;
 
         return $this->config->get($configKey, $fqClassName);
     }
