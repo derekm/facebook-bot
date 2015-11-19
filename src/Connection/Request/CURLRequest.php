@@ -19,7 +19,7 @@ namespace PHPWorldWide\FacebookBot\Connection\Request;
  */
 class CURLRequest extends RequestAbstract
 {
-    const USERAGENT = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7) Gecko/20040803 Firefox/0.9.3';
+    const USERAGENT = 'Mozilla/5.0 (X11; Fedora; Linux x86_64; rv:42.0) Gecko/20100101 Firefox/42.0';
 
     /**
      * The base url for the request.
@@ -78,7 +78,8 @@ class CURLRequest extends RequestAbstract
         curl_setopt($curl, CURLOPT_HEADER, $this->headersOnly);
         curl_setopt($curl, CURLOPT_NOBODY, $this->headersOnly);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($curl, CURLOPT_COOKIE, $this->cookies);
+        curl_setopt($curl, CURLOPT_COOKIEFILE, "cookie");
+        curl_setopt($curl, CURLOPT_COOKIEJAR, "cookie");
         curl_setopt($curl, CURLOPT_USERAGENT, self::USERAGENT);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
