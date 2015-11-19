@@ -15,7 +15,6 @@
 namespace PHPWorldWide\FacebookBot\Module\MemberRequestModule;
 
 use PHPWorldwide\FacebookBot\Connection\Connection;
-use PHPWorldwide\FacebookBot\Connection\ConnectionManager;
 use PHPWorldWide\FacebookBot\Module\ModuleAbstract;
 
 /**
@@ -23,8 +22,8 @@ use PHPWorldWide\FacebookBot\Module\ModuleAbstract;
  */
 class MemberRequestModule extends ModuleAbstract
 {
-	const MEMBERLIST_PATH = '/groups/{group_id}/';
-    const REQUESTFORM_CLASS = 'bg'; //'groupConfirmRequestForm';
+    const MEMBERLIST_PATH = '/groups/{group_id}/';
+    const REQUESTFORM_ACTION = '/write_async/requests/';
 
     public $debug = false;
 
@@ -37,18 +36,18 @@ class MemberRequestModule extends ModuleAbstract
      *
      * @throws ConnectionException If something goes wrong with the connection.
      */
-	protected function pollData(Connection $connection)
-	{
+    protected function pollData(Connection $connection)
+    {
         $entities = [];
         $dom = new \DOMDocument();
 
-        $page = $connection->request(Connection::REQ_LITE, self::MEMBERLIST_PATH, 'GET', [ 'view' => 'members' ]);
+        $page = $connection->request(Connection::REQ_LITE, self::MEMBERLIST_PATH, 'GET', [ 'view' => 'requests' ]);
         $dom->loadHTML($page);
 
         $forms = $dom->getElementsByTagName('form');
 
         foreach ($forms as $form) {
-            if ($form->getAttribute('class') == self::REQUESTFORM_CLASS) {
+            if (strpos($form->getAttribute('action'), self::REQUESTFORM_ACTION) !== FALSE) {
                 $entities[] = $this->parseEntity($form);
             }
         }
@@ -78,14 +77,10 @@ class MemberRequestModule extends ModuleAbstract
      */
     private function parseEntity(\DOMElement $form)
     {
-        $profileAnchor = $form->parentNode->getElementsByTagName('a')->item(0);
-        $nameElement = $profileAnchor->getElementsByTagName('strong')->item(0);
         $inputElements = $form->getElementsByTagName('input');
 
-        $name = trim($nameElement->textContent);
-        $profileUrl = $this->sanitizeProfileUrl($profileAnchor->getAttribute('href'));
-        $actionUrl = $this->sanitizeActionUrl($form->getAttribute('action'));
-        $inputData = [ 'confirm' => 'Add' ];
+        $actionUrl = $form->getAttribute('action');
+        $inputData = [ 'submit' => 'Approve All' ];
 
         foreach ($inputElements as $input) {
             if ($input->getAttribute('type') != 'submit') {
@@ -93,7 +88,7 @@ class MemberRequestModule extends ModuleAbstract
             }
         }
 
-        return new MemberRequestEntity($name, $profileUrl, $actionUrl, $inputData);
+        return new MemberRequestEntity(null, null, $actionUrl, $inputData);
     }
 
     /**
