@@ -20,7 +20,7 @@ use Monolog\Handler\FirePHPHandler;
 
 /**
  * Connection to the Facebook network. A connection is not thread-safe, so don't attempt to use 
- * them accross threads. Use the thread-manager to create connections in multi-threaded
+ * them across threads. Use the thread-manager to create connections in multi-threaded
  * applications.
  */
 class Connection
@@ -45,11 +45,7 @@ class Connection
     /**
      * Constructor
      *
-     * @param string $email Email to login to Facebook account
-     * @param string $password Password to login to Facebook account
-     * @param string $group_id The group to manage
-     * @param boolean $debug Set debuging on or off
-     *
+     * @param ConnectionParameters $parameters
      */
     public function __construct(ConnectionParameters $parameters)
     {
@@ -79,9 +75,6 @@ class Connection
 
     /**
      * Connects to Facebook using the stored credentials. Once connected, requests can be sent.
-     *
-     * @param string $email The login email
-     * @param string $password The login password
      */
     public function connect()
     {
@@ -110,6 +103,7 @@ class Connection
 
     /**
      * Builds the final path by replacing any connection-related parameters.
+     * TODO FIXME -- this is too module-specific
      */
     private function buildPath($path) 
     {

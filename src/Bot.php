@@ -96,7 +96,6 @@ class Bot
      * Creates an instance of a module configuration object.
      *
      * @param string $moduleName The name of the module
-     * @param array $config The arguments to supply with the module's constructor
      *
      * @return Module The new instance, which is an implementation of the Module interface.
      *
