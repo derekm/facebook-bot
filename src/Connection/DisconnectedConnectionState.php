@@ -22,14 +22,14 @@ use PHPWorldWide\FacebookBot\Connection\SessionBuilder\FacebookGraphSessionBuild
  */
 class DisconnectedConnectionState implements ConnectionState
 {
-	public function request(Connection $connection, $type, $url, $method, $data = [])
-	{
+    public function request(Connection $connection, $type, $url, $method, $data = [])
+    {
         throw new ConnectionException("Unable to perform a request when disconnected.", ConnectionException::ERR_NOTCONNECTED);
-	}
+    }
 
-	public function connect(Connection $connection, ConnectionParameters $connectionParameters)
-	{
-		$sessions = [
+    public function connect(Connection $connection, ConnectionParameters $connectionParameters)
+    {
+        $sessions = [
             Connection::SESSION_CURL => new FacebookSessionBuilder(
                 $connectionParameters->getEmail(), 
                 $connectionParameters->getPassword()
@@ -44,10 +44,10 @@ class DisconnectedConnectionState implements ConnectionState
         array_walk($sessions, function(&$item) { $item = $item->build(); });
 
         $connection->setState(new ConnectedConnectionState($sessions));
-	}
+    }
 
-	public function disconnect(Connection $connection)
-	{
+    public function disconnect(Connection $connection)
+    {
 		// not connected: no action required.
-	}
+    }
 }
