@@ -48,7 +48,6 @@ class EnforceAdminModule extends ModuleAbstract
         $addAdmins = array();
         do {
             $nodes = $xpath->evaluate("//a[text()='Make Admin']/@href");
-            print_r($nodes);
             foreach ($nodes as $node) {
                 array_push($addAdmins, $node->value);
             }
